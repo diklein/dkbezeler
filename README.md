@@ -50,7 +50,15 @@ dkbezeler <input …> [options]
 --bg-dark <hex>    video corner colour, dark master (default #0f1317)
 ```
 
-Stills produce `<base>-framed.png`. Videos produce `<base>-light.mp4`, `<base>-dark.mp4`, and matching `.jpg` posters, at the clip's own frame rate capped at 60. Set `--bg-light` / `--bg-dark` to your page's actual background colors or the baked corners will read as tinted squares. The default dark value is pre-compensated one step brighter than #0e1215 because the RGB to YUV420 round trip loses a unit per channel in the near-blacks.
+Stills produce `<base>-framed.png`. Videos produce `<base>-light.mp4`, `<base>-dark.mp4`, and matching `.jpg` posters, at the clip's own frame rate capped at 60.
+
+**Video corners must match your page backgrounds.** H.264 has no alpha, so the area outside the device is baked opaque, one master per theme. Corners that don't match the page read as tinted squares. Set your two backgrounds once and every video bake in the project uses them:
+
+```sh
+npx @diklein/dkbezeler theme --light "#ffffff" --dark "#0f1317"
+```
+
+`--bg-light` / `--bg-dark` override per bake, and a bake that falls back to the defaults says so loudly. One subtlety the defaults encode: near-black values decode about one unit darker through the YUV420 round trip, so set the dark value one step brighter than your CSS background (the default #0f1317 is what actually decodes to #0e1215).
 
 Stills are pure [sharp](https://sharp.pixelplumbing.com). Video input needs `ffmpeg` on PATH.
 

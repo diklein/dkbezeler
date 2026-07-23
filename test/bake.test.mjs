@@ -82,3 +82,14 @@ test('pickFrame falls back to aspect and rejects hopeless fits', () => {
   assert.equal(ok.frame.name, 'Some Phone')
   assert.throws(() => pickFrame({ w: 1000, h: 1333 }, frames), /no frame fits/)
 })
+
+test('theme pair round-trips through the manifest beside frames', async () => {
+  const { saveThemeBg, loadThemeBg, registerFrame, loadManifest } = await import('../cli/lib/frame.mjs')
+  const { mkdtempSync, copyFileSync } = await import('node:fs')
+  const themeDir = mkdtempSync(join(tmpdir(), 'dkbezeler-theme-'))
+  saveThemeBg(themeDir, { light: '#ffffff', dark: '#101216' })
+  copyFileSync(framePath, join(themeDir, 'frame.png'))
+  await registerFrame(themeDir, 'frame.png', 'Test Frame')
+  assert.deepEqual(loadThemeBg(themeDir), { light: '#ffffff', dark: '#101216' }, 'theme survives frame registration')
+  assert.equal(loadManifest(themeDir).length, 1)
+})

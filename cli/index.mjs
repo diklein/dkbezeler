@@ -28,7 +28,7 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, mkdirSync } from 'node:fs'
 import { join, dirname, basename, extname, resolve } from 'node:path'
 import sharp from 'sharp'
-import { measureFrame, loadManifest, registerFrame } from './lib/frame.mjs'
+import { measureFrame, loadManifest, registerFrame, loadThemeBg, saveThemeBg } from './lib/frame.mjs'
 import { pickFrame } from './lib/pick.mjs'
 import { bakeStill, bakeVideo, DEFAULT_THEME_BG } from './lib/bake.mjs'
 import { init, SOURCES } from './lib/init.mjs'
@@ -87,12 +87,30 @@ if (!command) {
 
 if (command === '--help' || command === '-h') {
   console.log(`dkbezeler init [device ...] [--all] [--dir bezels]
+dkbezeler theme --light <hex> --dark <hex> [--dir bezels]
 dkbezeler measure <frame.png> [--name "…"] [--dir bezels]
 dkbezeler frames [--dir bezels]
 dkbezeler check <input>
 dkbezeler <input …> [--frame name|png] [--out dir] [--name base] [--bg-light hex] [--bg-dark hex]
 
+Video corners must match YOUR page backgrounds (H.264 has no alpha). Set them once
+with \`dkbezeler theme\`; --bg-light/--bg-dark override per bake.
+
 devices for init: ${SOURCES.map((s) => s.key).join(', ')}`)
+  process.exit(0)
+}
+
+if (command === 'theme') {
+  const light = flag(args, '--light')
+  const dark = flag(args, '--dark')
+  if (!light || !dark) fail('theme needs --light <hex> and --dark <hex>, your page backgrounds in each mode')
+  for (const v of [light, dark]) {
+    if (!/^#[0-9a-f]{6}$/i.test(v)) fail(`not a hex colour: ${v} (expected #rrggbb)`)
+  }
+  mkdirSync(bezelsDir, { recursive: true })
+  saveThemeBg(bezelsDir, { light, dark })
+  console.log(`theme: video corners will bake light=${light} dark=${dark} (stored in ${join(bezelsDir, 'frames.json')})`)
+  console.log('tip: near-black darks decode ~1 unit darker through YUV420; set the value one step brighter than your CSS background')
   process.exit(0)
 }
 
@@ -151,10 +169,13 @@ if (!inputs.length) fail('nothing to bake')
 
 const frames = loadManifest(bezelsDir)
 const frameArg = flag(args, '--frame')
+// Corner colour precedence: per-bake flags > `dkbezeler theme` stored pair > defaults.
+const storedBg = loadThemeBg(bezelsDir)
 const themeBg = {
-  light: flag(args, '--bg-light') ?? DEFAULT_THEME_BG.light,
-  dark: flag(args, '--bg-dark') ?? DEFAULT_THEME_BG.dark,
+  light: flag(args, '--bg-light') ?? storedBg?.light ?? DEFAULT_THEME_BG.light,
+  dark: flag(args, '--bg-dark') ?? storedBg?.dark ?? DEFAULT_THEME_BG.dark,
 }
+const bgIsDefault = !flag(args, '--bg-light') && !flag(args, '--bg-dark') && !storedBg
 
 for (const input of inputs) {
   if (!existsSync(input)) fail(`no such file: ${input}`)
@@ -199,5 +220,12 @@ for (const input of inputs) {
   for (const o of outputs) console.log(`  ${o}`)
   if (size.kind === 'video') {
     console.log(`  light/dark masters: render both, swap with CSS (see DKBezelVideo)`)
+    if (bgIsDefault) {
+      console.log(
+        `  NOTE: corners baked with the default backgrounds (light ${themeBg.light}, dark ${themeBg.dark}).\n` +
+        `  They must match YOUR page's backgrounds or they will read as tinted squares.\n` +
+        `  Set yours once: dkbezeler theme --light <hex> --dark <hex>`
+      )
+    }
   }
 }

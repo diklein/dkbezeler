@@ -75,15 +75,33 @@ export async function measureFrame(file) {
 
 const MANIFEST = 'frames.json'
 
-/** frames.json in a bezels dir: [{ name, file, w, h, hole }] */
-export function loadManifest(dir) {
+function readManifest(dir) {
   const p = join(dir, MANIFEST)
-  if (!existsSync(p)) return []
-  return JSON.parse(readFileSync(p, 'utf-8')).frames ?? []
+  if (!existsSync(p)) return {}
+  return JSON.parse(readFileSync(p, 'utf-8'))
+}
+
+/** frames.json in a bezels dir: { themeBg?, frames: [{ name, file, w, h, hole }] } */
+export function loadManifest(dir) {
+  return readManifest(dir).frames ?? []
 }
 
 export function saveManifest(dir, frames) {
-  writeFileSync(join(dir, MANIFEST), JSON.stringify({ frames }, null, 2) + '\n')
+  const manifest = { ...readManifest(dir), frames }
+  writeFileSync(join(dir, MANIFEST), JSON.stringify(manifest, null, 2) + '\n')
+}
+
+/** The project's stored video corner colours ({ light, dark }), or null. Set once with
+ *  `dkbezeler theme`; every video bake in this dir then matches the site's backgrounds. */
+export function loadThemeBg(dir) {
+  return readManifest(dir).themeBg ?? null
+}
+
+export function saveThemeBg(dir, themeBg) {
+  const manifest = readManifest(dir)
+  manifest.themeBg = themeBg
+  manifest.frames ??= []
+  writeFileSync(join(dir, MANIFEST), JSON.stringify(manifest, null, 2) + '\n')
 }
 
 /** Measure a frame and upsert it into the dir's manifest under a display name. */

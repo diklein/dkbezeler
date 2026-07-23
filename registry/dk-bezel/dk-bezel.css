@@ -1,0 +1,39 @@
+/* DKBezeler display components. Theme switching follows the shadcn convention
+ * (a `.dark` class on <html>) and falls back to prefers-color-scheme when no
+ * theme class is in play. */
+
+.dkbz-figure {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dkbz-img,
+.dkbz-video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Exactly one master visible. The hidden one is display:none, so it never plays
+ * or fetches past metadata. */
+.dkbz-dark {
+  display: none;
+}
+
+.dark .dkbz-light {
+  display: none;
+}
+
+.dark .dkbz-dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :where(html:not(.light)) .dkbz-light {
+    display: none;
+  }
+
+  :where(html:not(.light)) .dkbz-dark {
+    display: block;
+  }
+}

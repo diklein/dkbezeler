@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "dkbezeler",
+  "homepage": "https://github.com/diklein/dkbezeler",
+  "items": [
+    {
+      "name": "dk-bezel",
+      "type": "registry:component",
+      "title": "DKBezeler",
+      "description": "Display components for DKBezeler's baked device frames: a framed still as a plain image, and the light/dark video pair swapped with CSS. Bake the assets with npx @diklein/dkbezeler.",
+      "files": [
+        {
+          "path": "registry/dk-bezel/dk-bezel.tsx",
+          "type": "registry:component",
+          "target": "components/dk-bezel/dk-bezel.tsx"
+        },
+        {
+          "path": "registry/dk-bezel/dk-bezel.css",
+          "type": "registry:file",
+          "target": "components/dk-bezel/dk-bezel.css"
+        }
+      ]
+    }
+  ]
+}

@@ -219,7 +219,7 @@ for (const input of inputs) {
     : await bakeVideo(input, frame, outBase, themeBg)
   for (const o of outputs) console.log(`  ${o}`)
   if (size.kind === 'video') {
-    console.log(`  light/dark masters: render both, swap with CSS (see DKBezelVideo)`)
+    console.log(`  light/dark versions: render both, swap with CSS (see DKBezelVideo)`)
     if (bgIsDefault) {
       console.log(
         `  NOTE: corners baked with the default backgrounds (light ${themeBg.light}, dark ${themeBg.dark}).\n` +

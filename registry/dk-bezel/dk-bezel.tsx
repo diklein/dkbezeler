@@ -38,7 +38,7 @@ export interface DKBezelVideoProps {
   base: string
   /** Accessible label for the clip. */
   alt?: string
-  /** Intrinsic pixels of the baked masters (dkbezeler prints them). Declares the
+  /** Intrinsic pixels of the baked videos (dkbezeler prints them). Declares the
    *  aspect ratio so the box holds its size before video metadata arrives (a bare
    *  <video> is 300x150 until then, which costs CLS). */
   width: number
@@ -48,8 +48,8 @@ export interface DKBezelVideoProps {
 }
 
 /**
- * H.264 has no alpha, so the bake writes a light and a dark master with corners
- * matched to each theme's page background. Both render; CSS shows exactly one
+ * H.264 has no alpha, so the bake writes a light version and a dark version with
+ * corners matched to each theme's page background. Both render; CSS shows exactly one
  * (`.dark` class convention, falling back to prefers-color-scheme). The hidden one
  * is display:none, so it never fetches past metadata or plays.
  */

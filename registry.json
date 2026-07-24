@@ -7,7 +7,7 @@
       "name": "dk-bezel",
       "type": "registry:component",
       "title": "DKBezeler",
-      "description": "Display components for DKBezeler's baked device frames: a framed still as a plain image, and the light/dark video pair swapped with CSS. Bake the assets with npx @diklein/dkbezeler.",
+      "description": "Display components for DKBezeler's baked device frames: a framed still as a plain image, and the light and dark video versions swapped with CSS. Bake the assets with npx @diklein/dkbezeler.",
       "files": [
         {
           "path": "registry/dk-bezel/dk-bezel.tsx",

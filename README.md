@@ -37,7 +37,7 @@ Apple publishes these as public downloads on their CDN (PNG + Photoshop, no sign
 npx @diklein/dkbezeler measure my-frame.png --name "iPhone 17 Pro"
 ```
 
-When Apple ships a new device, `init` needs nothing new: download the new bezel, `measure` it, done. The resolution table sharpens auto-picking for known devices and takes pull requests.
+When Apple ships a new device, you never wait for a package update. Download the new bezel from Apple's page, run `measure` on it (the measuring itself is automatic), and bake. A release that adds the device to init's catalog and the resolution table makes it one command for everyone; pull requests for both are welcome.
 
 ## Baking
 

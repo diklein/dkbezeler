@@ -9,6 +9,8 @@ npx @diklein/dkbezeler init
 npx @diklein/dkbezeler "Screen Recording.mov" --out public/img
 ```
 
+**Requirements:** Node 18+. Stills need nothing else. Baking *videos* needs [ffmpeg](https://ffmpeg.org) installed on your machine (`brew install ffmpeg` on macOS); the CLI checks and tells you if it is missing.
+
 ## How it picks the frame
 
 1. The capture's pixel size is looked up in a device-resolution table (1206x2622 is an iPhone 17 Pro capture, 1320x2868 a Pro Max, and so on). A hit picks the matching registered frame by name.
@@ -60,7 +62,7 @@ npx @diklein/dkbezeler theme --light "#ffffff" --dark "#0f1317"
 
 `--bg-light` / `--bg-dark` override per bake, and a bake that falls back to the defaults says so loudly. One subtlety the defaults encode: near-black values decode about one unit darker through the YUV420 round trip, so set the dark value one step brighter than your CSS background (the default #0f1317 is what actually decodes to #0e1215).
 
-Stills are pure [sharp](https://sharp.pixelplumbing.com). Video input needs `ffmpeg` on PATH.
+Stills need nothing beyond this package ([sharp](https://sharp.pixelplumbing.com) comes with it). Video input shells out to ffmpeg, which you install yourself (`brew install ffmpeg` on macOS); the CLI tells you if it is missing.
 
 `dkbezeler check <input>` exits 0 when a file looks like a phone capture (portrait, aspect between 1.95 and 2.35, at least 700px wide), for wiring into watchers and hooks.
 

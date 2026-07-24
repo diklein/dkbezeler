@@ -1,7 +1,7 @@
 {
   "name": "@diklein/dkbezeler",
   "version": "0.1.0",
-  "description": "Bake screenshots and screen recordings into device bezel frames at build time. Auto-detects the device from the capture's resolution, measures any frame PNG's screen cutout automatically, and fetches Apple's product bezels onto your machine with one command. Stills are pure sharp; videos need ffmpeg.",
+  "description": "Bake screenshots and screen recordings into device bezel frames at build time. Auto-detects the device from the capture's resolution, measures any frame PNG's screen cutout automatically, and fetches Apple's product bezels onto your machine with one command. Stills work out of the box; video input needs ffmpeg installed.",
   "license": "MIT",
   "author": "David Klein (https://diklein.com)",
   "homepage": "https://github.com/diklein/dkbezeler",

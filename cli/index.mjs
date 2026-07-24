@@ -51,6 +51,7 @@ async function mediaSize(file) {
     return { w: swap ? meta.height : meta.width, h: swap ? meta.width : meta.height, kind: 'image' }
   }
   if (VIDEO_EXT.test(file)) {
+    requireFfmpeg()
     const out = execFileSync('ffprobe', [
       '-v', 'error', '-select_streams', 'v:0',
       '-show_entries', 'stream=width,height', '-of', 'csv=p=0', file,
@@ -64,6 +65,24 @@ async function mediaSize(file) {
 function fail(msg, code = 2) {
   console.error(`dkbezeler: ${msg}`)
   process.exit(code)
+}
+
+/* Stills are pure sharp (installed with this package). Video input shells out to
+   ffmpeg/ffprobe, which npm cannot install — say so plainly instead of ENOENT. */
+function requireFfmpeg() {
+  for (const bin of ['ffmpeg', 'ffprobe']) {
+    try {
+      execFileSync(bin, ['-version'], { stdio: 'ignore' })
+    } catch {
+      fail(
+        `video input needs ${bin}, which is not installed (or not on PATH).\n` +
+        `  macOS:  brew install ffmpeg\n` +
+        `  Linux:  apt install ffmpeg (or your distro's equivalent)\n` +
+        `  Windows / other: https://ffmpeg.org/download.html\n` +
+        `Stills need nothing extra.`
+      )
+    }
+  }
 }
 
 function flag(args, name) {
@@ -117,6 +136,17 @@ if (command === 'theme') {
 if (command === 'init') {
   const keys = args.includes('--all') ? SOURCES.map((s) => s.key) : positionals(args.slice(1))
   await init(bezelsDir, keys).catch((e) => fail(e.message))
+  // The one onboarding moment every user hits: say what video baking will need
+  // BEFORE the first "Screen Recording.mov" fails. Informational, never fatal —
+  // stills need nothing beyond this package.
+  try {
+    execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' })
+  } catch {
+    console.log(
+      'note: ffmpeg is not installed. Stills bake fine without it, but screen recordings\n' +
+      'will need it: brew install ffmpeg (macOS) or https://ffmpeg.org/download.html'
+    )
+  }
   process.exit(0)
 }
 

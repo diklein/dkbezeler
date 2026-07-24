@@ -24,12 +24,12 @@ DKBezeler ships no frame art, deliberately. A frame is any PNG of a device with 
 `init` fetches Apple's official product bezels onto your machine:
 
 ```sh
-npx @diklein/dkbezeler init                 # iPhone 17 family
+npx @diklein/dkbezeler init                 # every device in the catalog
+npx @diklein/dkbezeler init iphone-17       # or name just the ones you shoot on
 npx @diklein/dkbezeler init iphone-16 ipad-pro
-npx @diklein/dkbezeler init --all
 ```
 
-Apple publishes these as public downloads on their CDN (PNG + Photoshop, no sign-in); init automates the download you would otherwise do by hand at [developer.apple.com/design/resources](https://developer.apple.com/design/resources/), extracts the PNGs into `./bezels/`, measures each one, and writes `bezels/frames.json`. Nothing is redistributed by this package, and Apple's [marketing guidelines](https://developer.apple.com/app-store/marketing/guidelines/) for the bezels are yours to follow. The dmg extraction step needs macOS (`hdiutil`); on other platforms extract the PNGs yourself and register them:
+Apple publishes these as public downloads on their CDN (PNG + Photoshop, no sign-in); init automates the download you would otherwise do by hand at [developer.apple.com/design/resources](https://developer.apple.com/design/resources/), extracts the PNGs into `./bezels/`, measures each one, and writes `bezels/frames.json`. With no arguments it fetches the full catalog (both iPhone families, four iPads, two Watches); that is a heavy first download, so name devices to stay lean. Nothing is redistributed by this package, and Apple's [marketing guidelines](https://developer.apple.com/app-store/marketing/guidelines/) for the bezels are yours to follow. The dmg extraction step needs macOS (`hdiutil`); on other platforms extract the PNGs yourself and register them:
 
 ```sh
 npx @diklein/dkbezeler measure my-frame.png --name "iPhone 17 Pro"

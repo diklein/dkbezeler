@@ -57,9 +57,9 @@ export async function init(bezelsDir, keys) {
       'developer.apple.com/design/resources/, extract the PNGs, then `dkbezeler measure <frame.png>`.'
     )
   }
-  const wanted = keys.length
-    ? SOURCES.filter((s) => keys.includes(s.key))
-    : SOURCES.filter((s) => s.key === 'iphone-17')
+  // No devices named = fetch the whole catalog. Naming devices (or --all, its
+  // explicit spelling) narrows or confirms; the common first run just works.
+  const wanted = keys.length ? SOURCES.filter((s) => keys.includes(s.key)) : SOURCES
   const unknown = keys.filter((k) => !SOURCES.some((s) => s.key === k))
   if (unknown.length) {
     throw new Error(`unknown device(s): ${unknown.join(', ')}. Known: ${SOURCES.map((s) => s.key).join(', ')}, or --all`)

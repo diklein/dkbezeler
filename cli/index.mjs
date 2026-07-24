@@ -86,7 +86,7 @@ if (!command) {
 }
 
 if (command === '--help' || command === '-h') {
-  console.log(`dkbezeler init [device ...] [--all] [--dir bezels]
+  console.log(`dkbezeler init [device ...] [--dir bezels]   (no devices = the full catalog)
 dkbezeler theme --light <hex> --dark <hex> [--dir bezels]
 dkbezeler measure <frame.png> [--name "…"] [--dir bezels]
 dkbezeler frames [--dir bezels]

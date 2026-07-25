@@ -69,10 +69,10 @@ Stills need nothing beyond this package ([sharp](https://sharp.pixelplumbing.com
 ## Display components
 
 ```sh
-npx shadcn add https://diklein.com/r/dk-bezel.json
+npx shadcn add https://diklein.com/r/dk-bezeler.json
 ```
 
-installs `DKBezelImage` and `DKBezelVideo` into `components/dk-bezel/`. Import the stylesheet once, then:
+installs `DKBezelImage` and `DKBezelVideo` into `components/dk-bezeler/`. Import the stylesheet once, then:
 
 ```tsx
 <DKBezelImage src="/img/onboarding-framed.png" width={900} height={1840} alt="Onboarding" />

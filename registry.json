@@ -4,20 +4,20 @@
   "homepage": "https://github.com/diklein/dkbezeler",
   "items": [
     {
-      "name": "dk-bezel",
+      "name": "dk-bezeler",
       "type": "registry:component",
       "title": "DKBezeler",
       "description": "Display components for DKBezeler's baked device frames: a framed still as a plain image, and the light and dark video versions swapped with CSS. Bake the assets with npx @diklein/dkbezeler.",
       "files": [
         {
-          "path": "registry/dk-bezel/dk-bezel.tsx",
+          "path": "registry/dk-bezeler/dk-bezeler.tsx",
           "type": "registry:component",
-          "target": "components/dk-bezel/dk-bezel.tsx"
+          "target": "components/dk-bezeler/dk-bezeler.tsx"
         },
         {
-          "path": "registry/dk-bezel/dk-bezel.css",
+          "path": "registry/dk-bezeler/dk-bezeler.css",
           "type": "registry:file",
-          "target": "components/dk-bezel/dk-bezel.css"
+          "target": "components/dk-bezeler/dk-bezeler.css"
         }
       ]
     }
